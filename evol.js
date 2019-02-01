@@ -1,6 +1,8 @@
 //Moddable constants
-const MUTATION_RATE = 0.15;
-const AVE_DEATH = 80;
+const MUTATION_RATE = 0.25; //How much a new child can be mutated
+var AVE_DEATH = 90; //Average death age of a creature
+const BASE_REPRODUCTION = 0.6; //Raise to increase reproduction chances overall
+const OVERPOPULATION_AMOUNT = 1000 //Amount before creatures start dying from overpopulation
 
 //Set up canvas
 var canvas = document.getElementById( "evoCanvas" );
@@ -38,6 +40,7 @@ selectB.oninput = function() { selectBVal = this.value/100; }
 selectC.oninput = function() { selectCVal = this.value/100; }
 
 document.getElementById( "pauseB" ).innerHTML = pausedText;
+document.getElementById( "formValueId" ).defaultValue = String( AVE_DEATH );
 
 //Getting mouse position (why isnt this built in omg)
 function getMousePos( canvas, event ) {
@@ -52,6 +55,11 @@ canvas.addEventListener( 'mousemove', function(evt) {
 	mousePos = getMousePos( canvas, evt );
 }, false );
 
+//User changed death rate
+function changeDeathRate( val ) {
+	AVE_DEATH = val;
+}
+
 //Pause functionality
 function pauseToggle() {
 	gamePaused = !gamePaused;
@@ -63,7 +71,7 @@ function pauseToggle() {
 }
 
 //Ball object definition
-function Ball( traitA, traitB, traitC, id, parents, xPos, yPos, age, sex ) {
+function Ball( traitA, traitB, traitC, id, parents, xPos, yPos, age, sex, generation ) {
 	this.traitA = traitA;
 	this.traitB = traitB;
 	this.traitC = traitC;
@@ -73,6 +81,7 @@ function Ball( traitA, traitB, traitC, id, parents, xPos, yPos, age, sex ) {
 	this.yPos = yPos;
 	this.age = age;
 	this.sex = sex;
+	this.generation = generation;
 	this.deathAge  = AVE_DEATH+Math.random()*10;
 	this.draw = function() {
 		ctx.beginPath();
@@ -94,14 +103,32 @@ function aging() {
 	if( gamePaused ) return false;
 	for( var i = 0; i < allCreatures.length; i++ ) {
 		allCreatures[i].age += 1;
+		
+		//Die of natural causes
 		if( allCreatures[i].age > allCreatures[i].deathAge ) {
 			if( i > latestDeath )
 				latestDeath = i;
 			allCreatures[i] = false;
 		}
+		
+		//Die of bad conditions
+		if( ((allCreatures[i].traitA - selectAVal)>0.7) || ((allCreatures[i].traitB - selectBVal)>0.7) || ((allCreatures[i].traitC - selectCVal)>0.7) ) {
+			if( Math.random() > 0.95 )
+			{
+				allCreatures[i] = false;
+				console.log( "A creature died" );
+			}
+		}
 	}
 }
 aging();
+
+
+//Speed changer using UI
+function changeSpeed( input ) {
+	gameSpeed = input * 5;
+	console.log( "speed changed to " + String( gameSpeed ) );
+}
 
 //To inject the first few specimen
 function injectSpecimen() {
@@ -112,7 +139,7 @@ function injectSpecimen() {
 	var tempB = sliderBVal;
 	var tempC = sliderCVal;
 	allCreatures[newId] = new Ball( tempA, tempB, tempC, newId, [ "YOU" ], 
-		Math.random()*canvas.width, Math.random()*canvas.height, 0, newSex )
+		Math.random()*canvas.width, Math.random()*canvas.height, 0, newSex, 0 )
 }
 
 /*Reproduction loop
@@ -121,7 +148,7 @@ function injectSpecimen() {
 */
 function reproduce() {
 	//So reprdouction happens semi randomly
-	var rand = Math.floor( 9000 - Math.random() * 6000 )/gameSpeed;
+	var rand = Math.floor( 5000 - Math.random() * 5000 )/gameSpeed;
 	setTimeout( function() {
 		reproduce();
 	}, rand );
@@ -130,7 +157,7 @@ function reproduce() {
 	for( var i = latestDeath; i < allCreatures.length; i++ ) {
 		if( allCreatures[i].age > 5 && allCreatures[i].sex == "m" ) {
 			//Chance of reproduction given current environment
-			var reproRate = (0.75 + ( 1.2*(selectAVal-0.5)*allCreatures[i].traitA + (selectBVal-0.5)*allCreatures[i].traitB
+			var reproRate = (BASE_REPRODUCTION + ( 1.2*(selectAVal-0.5)*allCreatures[i].traitA + (selectBVal-0.5)*allCreatures[i].traitB
 				+ (selectCVal-0.5)*allCreatures[i].traitC ) )/(1+(selectAVal+selectBVal+selectCVal)/6).toPrecision(4); //Possibly divide by total traits for a ratio?
 			console.log( String( allCreatures[i].traitA )+"|"+String(allCreatures[i].traitB)+"|"
 				+String(allCreatures[i].traitC)+"  Rate: " + String( reproRate ) );
@@ -151,6 +178,18 @@ function reproduce() {
 			}
 			while( !partner || partner.id == i || partner.sex == allCreatures[i].sex || partner.age <= 5 );
 			
+			//Inefficient but... population control
+			var curAlive = 0;
+			for( var j = 0; j < allCreatures.length; j++ ){
+				if( allCreatures[j] ) { curAlive++; }
+			}
+			if( curAlive >= OVERPOPULATION_AMOUNT ) {
+				console.log( "Overpopulation: " + String( curAlive ) );
+				if( Math.random() > 0.6 )
+					return false;
+			}
+				
+			
 			//Make babby
 			newId = allCreatures.length;
 			partnerWeightA = Math.random();
@@ -170,7 +209,7 @@ function reproduce() {
 			newC = ( newC > 1 ) ? 1 : newC;
 			newSex = ( Math.floor( Math.random() * 2 ) == 0 ) ? "m" : "f";
 			allCreatures[newId] = new Ball( newA, newB, newC, newId, [ allCreatures[i].id, partner.id ], 
-				Math.random()*canvas.width, Math.random()*canvas.height, 0, newSex )
+				Math.random()*canvas.width, Math.random()*canvas.height, 0, newSex, allCreatures[i].generation + 1 )
 			
 			console.log( String(allCreatures[i].id) + " reproduced with " + String(partner.id) + "." );
 			console.log( "Traits: " + String( newA ) + ", " + String( newB ) + ", " + String( newC ) + "." + newSex );
@@ -188,6 +227,7 @@ function sendInfo( creature ) {
 	document.getElementById( "traSex" ).innerHTML = String( creature.sex );
 	document.getElementById( "traParents" ).innerHTML = String( creature.parents );
 	document.getElementById( "traAge" ).innerHTML = String( creature.age );
+	document.getElementById( "traGen" ).innerHTML = String( creature.generation );
 }
 
 //Draw loop
