@@ -9,7 +9,7 @@
 
 <!-- Game canvas -->
 <div id="canvas-ui">
-	<canvas id="evoCanvas" width="960" height="720"></canvas>
+	<canvas id="evoCanvas" width="1150" height="720"></canvas>
 	
 	<!-- Info table -->
 	<table id="canvas-table" border="1">
@@ -42,16 +42,21 @@
 			<td>Age</td>
 			<td id = "traAge"></td>
 			</tr>
+			<tr>
+			<td>Generation</td>
+			<td id = "traGen"></td>
+			</tr>
 		</tbody>
 	</table>
 	
 	<div id="controls">
 		<!-- Pause button -->
 		<button id="pauseB"
-		 type="button" onclick="pauseToggle()"></button>
+		 type="button" onclick="pauseToggle();"></button>
 		 
 		 
 		<div class="slidecontainer">
+			<p style="text-align: center;">Specimen Traits</p>
 		  <input type="range" min="0" max="100" value="0" class="slider" id="sliderA" style="--thumb-color: rgba(255, 0, 0, 0.8);">
 		  <input type="range" min="0" max="100" value="0" class="slider" id="sliderB" style="--thumb-color: rgba(0, 255, 0, 0.8);">
 		  <input type="range" min="0" max="100" value="0" class="slider" id="sliderC" style="--thumb-color: rgba(0, 0, 255, 0.8);">
@@ -65,17 +70,28 @@
 		</div>
 		
 		<div class="slidecontainer">
+			<p style="text-align: right;">Optimal Traits (center is neutral)</p>
 		  <input type="range" min="0" max="100" value="50" class="slider" id="selectA" style="margin: 17px 50px; --thumb-color: rgba(255, 0, 0, 0.8);">
 		  <input type="range" min="0" max="100" value="50" class="slider" id="selectB" style="margin: 17px 50px; --thumb-color: rgba(0, 255, 0, 0.8);">
 		  <input type="range" min="0" max="100" value="50" class="slider" id="selectC" style="margin: 17px 50px; --thumb-color: rgba(0, 0, 255, 0.8);">
 		</div>
+		
+		<div class="slidecontainer" style="margin-left:80px;">
+			Game Speed<br>
+			<input id="1xgs" type="radio" name="gender" value="1" checked onclick="changeSpeed( 2 );">1x<br>
+			<input id="10xgs" type="radio" name="gender" value="10" onclick="changeSpeed( 5 );">5x<br>
+			<input id="25xgs" type="radio" name="gender" value="25" onclick="changeSpeed( 10 );">10x
+		</div>
+		
+		<div style="margin-left:40px;margin-top:-27px;">
+			<form>
+			Death age (pause!):<br>
+			<input type="text" id="formValueId" name="valueId"/>
+			</form>
+		</div>
 	</div>
 </div>
 
-<div>
- 
-
-</div>
  
 <script type="text/javascript" src="evol.js"></script>
 
