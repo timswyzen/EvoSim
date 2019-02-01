@@ -13,4 +13,4 @@ TODO:
   - Possibly kill off unsuitable creatures to make natural selection actually work?
 - ~Add a generation counter~
 - Add overpopulation control
-- Allow for custom reproduction & death rates as well as game speed (within the UI)
+- Allow for custom reproduction & death rates ~as well as game speed (within the UI)~
