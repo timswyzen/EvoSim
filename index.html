@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Pazda's Evolution Simulator</title>
+	<link rel="stylesheet" type="text/css" href="evol.css">
+</head>
+<body>
+
+<!-- Game canvas -->
+<div id="canvas-ui">
+	<canvas id="evoCanvas" width="960" height="720"></canvas>
+	
+	<!-- Info table -->
+	<table id="canvas-table" border="1">
+		<tbody>
+			<tr>
+			<td>ID</td>
+			<td id="creatID"></td>
+			</tr>
+			<tr>
+			<td>Trait A</td>
+			<td id="traA"></td>
+			</tr>
+			<tr>
+			<td>Trait B</td>
+			<td id="traB"></td>
+			</tr>
+			<tr>
+			<td>Trait C</td>
+			<td id="traC"></td>
+			</tr>
+			<tr>
+			<td>Sex</td>
+			<td id = "traSex"></td>
+			</tr>
+			<tr>
+			<td>Parents</td>
+			<td id = "traParents"></td>
+			</tr>
+			<tr>
+			<td>Age</td>
+			<td id = "traAge"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div id="controls">
+		<!-- Pause button -->
+		<button id="pauseB"
+		 type="button" onclick="pauseToggle()"></button>
+		 
+		 
+		<div class="slidecontainer">
+		  <input type="range" min="0" max="100" value="0" class="slider" id="sliderA" style="--thumb-color: rgba(255, 0, 0, 0.8);">
+		  <input type="range" min="0" max="100" value="0" class="slider" id="sliderB" style="--thumb-color: rgba(0, 255, 0, 0.8);">
+		  <input type="range" min="0" max="100" value="0" class="slider" id="sliderC" style="--thumb-color: rgba(0, 0, 255, 0.8);">
+		</div>
+		 
+		<div id="arrow-butt">
+			<img id="arrowImg" src="https://www.powerframeworks.com/assets/series/AV/025/av025_0501-v3.jpg" height="110px" style="margin-right:-10px">
+			
+			<button id="injectSpec"  
+			 type="button" onclick="injectSpecimen()">Inject Specimen</button>
+		</div>
+		
+		<div class="slidecontainer">
+		  <input type="range" min="0" max="100" value="50" class="slider" id="selectA" style="margin: 17px 50px; --thumb-color: rgba(255, 0, 0, 0.8);">
+		  <input type="range" min="0" max="100" value="50" class="slider" id="selectB" style="margin: 17px 50px; --thumb-color: rgba(0, 255, 0, 0.8);">
+		  <input type="range" min="0" max="100" value="50" class="slider" id="selectC" style="margin: 17px 50px; --thumb-color: rgba(0, 0, 255, 0.8);">
+		</div>
+	</div>
+</div>
+
+<div>
+ 
+
+</div>
+ 
+<script type="text/javascript" src="evol.js"></script>
+
+</body>
+</html>
