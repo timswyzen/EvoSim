@@ -1,6 +1,9 @@
 # EvoSim
 An evolution/natural selection simulator
+
 Still early WIP
+
+Try it here: http://eden.rutgers.edu/~ts857/
 
 TODO:
 - Improve UI... substantially
