@@ -15,7 +15,7 @@ An evolution/natural selection simulator made by Pazda as a personal project to 
 - Mutations occur by up to 0.05% of a trait per generation
 - Overpopulation may occur! If it does, reproduction has a high chance of failing.
 
-## Try it here: http://eden.rutgers.edu/~ts857/
+## Try it here: http://www.timswyzen.me/
 
 ## TODO:
 - Improve UI... substantially
