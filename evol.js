@@ -57,7 +57,10 @@ canvas.addEventListener( 'mousemove', function(evt) {
 
 //User changed death rate
 function changeDeathRate( val ) {
-	AVE_DEATH = val;
+	if ( event.key === 'Enter' ) {
+		AVE_DEATH = val.value;
+		console.log( "Ave death changed to " + AVE_DEATH );
+	}
 }
 
 //Pause functionality
