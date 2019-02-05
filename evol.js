@@ -85,7 +85,8 @@ function Ball( traitA, traitB, traitC, id, parents, xPos, yPos, age, sex, genera
 	this.age = age;
 	this.sex = sex;
 	this.generation = generation;
-	this.deathAge  = AVE_DEATH+Math.random()*10;
+	this.deathAge = parseInt(AVE_DEATH) + Math.random()*(AVE_DEATH/10);
+	console.log( "this death age: " + this.deathAge + ". normald eath age: " + AVE_DEATH );
 	this.draw = function() {
 		ctx.beginPath();
 		ctx.arc( this.xPos, this.yPos, circleSize, 0, Math.PI*2, false );
