@@ -15,7 +15,7 @@ An evolution/natural selection simulator made by Pazda as a personal project to 
 - Mutations occur by up to 0.05% of a trait per generation
 - Overpopulation may occur! If it does, reproduction has a high chance of failing.
 
-## Try it here: https://pazda.github.io/EvoSim/
+## Try it here: https://timswyzen.github.io/EvoSim/
 
 ## TODO:
 - Improve UI... substantially
